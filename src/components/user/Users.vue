@@ -44,7 +44,7 @@
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUser(scope.row.id)"></el-button>
             <!-- 分配角色 -->
             <el-tooltip class="item" effect="dark" content="分配角色" placement="top" enterable="false">
-              <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+              <el-button type="warning" icon="el-icon-setting" size="mini" @click="setRole(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -92,6 +92,22 @@
         <el-button type="primary" @click="editUser">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 角色分配 -->
+    <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible" width="50%" @close="setUserDialogClose">
+      <div>
+        <p>当前用户：{{ userInfo.username }}</p>
+        <p>当前角色：{{ userInfo.role_name }}</p>
+        <p>
+          <el-select v-model="setRoleValue" placeholder="请选择">
+            <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id"> </el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateUserRole(userInfo.id)">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -135,7 +151,8 @@ export default {
       },
       // 修改用户对话框
       editDialogVisible: false,
-
+      // 分配角色
+      setRoleDialogVisible: false,
       // 验证规则
       // 增加用户
       addFormRules: {
@@ -166,7 +183,13 @@ export default {
           { required: true, message: '手机号', trigger: 'blur' },
           { validator: checkMoblie, trigger: 'blur' }
         ]
-      }
+      },
+      // 需要被分配权限的用户信息
+      userInfo: {},
+      // 角色列表
+      roleList: [],
+      // 已选中的角色id
+      setRoleValue: ''
     }
   },
 
@@ -283,6 +306,40 @@ export default {
       }
       this.getUserList()
       return this.$message.success('删除用户成功')
+    },
+    // 打开修改用户角色界面
+    async setRole(userInfo) {
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取角色列表失败')
+      }
+      this.roleList = res.data
+
+      this.userInfo = userInfo
+      this.setRoleDialogVisible = true
+      console.log(userInfo)
+    },
+    // 修改用户角色
+    // 超级管理员无法修改用户角色?
+    async updateUserRole(userId) {
+      const { data: res } = await this.$http.put(`users/${userId}/role`, {
+        id: userId,
+        rid: this.setRoleValue
+      })
+
+      if (res.meta.status !== 200) {
+        return this.$message.error('修改用户角色失败')
+      }
+
+      // console.log(res.data)
+      this.getUserList()
+      this.setRoleDialogVisible = false
+      return this.$message.success('修改用户角色成功')
+    },
+    // 关闭修改用户角色界面
+    setUserDialogClose() {
+      this.setRoleValue = ''
+      this.roleList = {}
     }
   }
 }
