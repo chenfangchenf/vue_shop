@@ -15,7 +15,7 @@
       <el-aside :width="isCollpase ? '64px' : '200px'">
         <div class="toggle-button" @click="toggleCollapse">|||</div>
         <!-- 侧边栏菜单 -->
-        <el-menu background-color="#333744" text-color="#fff" active-text-color="#409EFF" unique-opened="true" :collapse="isCollpase" :collapse-transition="false" :router="true" :default-active="activePath">
+        <el-menu background-color="#333744" text-color="#fff" active-text-color="#409EFF" :unique-opened="true" :collapse="isCollpase" :collapse-transition="false" :router="true" :default-active="activePath">
           <el-submenu :index="item.id + ''" v-for="item in menulist" :key="item.id">
             <template slot="title">
               <i :class="iconlist[item.id]"></i>
