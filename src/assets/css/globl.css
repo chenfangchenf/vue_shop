@@ -26,3 +26,10 @@ body,
 .el-scrollbar__wrap {
   height: 200px !important;
 }
+.el-steps {
+  margin: 20px 0px;
+}
+/* 编辑器高度 */
+.ql-editor {
+  min-height: 300px;
+}
