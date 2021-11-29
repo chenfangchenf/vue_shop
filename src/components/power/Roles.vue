@@ -57,7 +57,7 @@
 
     <!-- 添加角色对话框 -->
     <el-dialog title="添加角色" :visible.sync="addRoleDialogVisible" width="30%" @close="addDialogClosed">
-      <el-form :model="addRoleFrom" :rules="addRoleFromRules" ref="addRoleFromRef" label-width="100px">
+      <el-form :model="addRoleFrom" ref="addRoleFromRef" label-width="100px">
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="addRoleFrom.roleName"></el-input>
         </el-form-item>
@@ -74,7 +74,7 @@
     <!-- 分配权限 -->
     <el-dialog title="分配权限" :visible.sync="setRightdialogVisible" width="50%" @close="setRightDialogClosed">
       <!-- 树形 -->
-      <el-tree :data="userRightlist" :props="treeProps" ref="treeRef" show-checkbox node-key="id" default-expand-all="true" :default-checked-keys="defKeys"></el-tree>
+      <el-tree :data="userRightlist" :props="treeProps" ref="treeRef" show-checkbox node-key="id" :default-expand-all="true" :default-checked-keys="defKeys"></el-tree>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightdialogVisible = false">取 消</el-button>
