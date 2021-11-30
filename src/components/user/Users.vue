@@ -43,7 +43,7 @@
             <!-- 删除 -->
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUser(scope.row.id)"></el-button>
             <!-- 分配角色 -->
-            <el-tooltip class="item" effect="dark" content="分配角色" placement="top" enterable="false">
+            <el-tooltip class="item" effect="dark" content="分配角色" placement="top" :enterable="false">
               <el-button type="warning" icon="el-icon-setting" size="mini" @click="setRole(scope.row)"></el-button>
             </el-tooltip>
           </template>
@@ -54,7 +54,7 @@
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[2, 5, 8, 10]" :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
     </el-card>
     <!-- 添加用户对话框 -->
-    <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="30%" :before-close="handleClose" @close="addDialogClosed">
+    <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="30%" @close="addDialogClosed">
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="addForm.username"></el-input>
@@ -75,7 +75,7 @@
       </span>
     </el-dialog>
     <!-- 修改用戶 -->
-    <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="30%" :before-close="handleClose" @close="editDialogClosed">
+    <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="30%" @close="editDialogClosed">
       <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="editForm.username" :disabled="true"></el-input>
